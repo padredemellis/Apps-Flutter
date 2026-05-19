@@ -1,4 +1,3 @@
-import 'package:contador/features/view/screens/counter_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:contador/features/view/screens/counter_functions_screen.dart';
 
