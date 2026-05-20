@@ -4,10 +4,12 @@
 /// una gestión eficiente y reactiva de los datos en la aplicación.
 ///
 /// Características implementadas:
+/// - HomeView: Pantalla de inicio con menú principal y botón para jugar
 /// - Contador: Aplicación simple que incrementa, decrementa y reinicia un contador
 /// - Juego de Pelota: Juego interactivo donde el usuario toca la pelota para ganar puntos
 
 import 'package:aprendiendo_riverpod/features/contador/view/contador_view.dart';
+import 'package:aprendiendo_riverpod/features/juego_pelota/view/home_view.dart';
 import 'package:aprendiendo_riverpod/features/juego_pelota/view/juego_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,9 +32,10 @@ class CounterApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      title: 'Aprendiendo Riverpod y Loop Game',
       debugShowCheckedModeBanner: false,
-      home: JuegoView(),
+      home: HomeView(),
     );
   }
 }

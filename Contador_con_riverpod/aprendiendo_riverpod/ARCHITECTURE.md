@@ -180,6 +180,78 @@ state = state.copyWith(posicionY: 100.0, toques: 5);
 10. Nuevo tap en "Game Over" → Reinicia el juego
 ```
 
+### HomeView (StatelessWidget Simple)
+
+```
+1. HomeView renderizado como pantalla inicial
+   ↓
+2. build() genera UI estática (sin providers)
+   ↓
+3. Componentes:
+   - Gradiente de fondo (azul → verde)
+   - Icono de pelota
+   - Título y descripción
+   - Botón de navegación
+   ↓
+4. Usuario toca botón "¡JUGAR!"
+   ↓
+5. Navigator.push() navega a JuegoView
+   ↓
+6. JuegoView se muestra en stack
+   ↓
+7. Usuario puede volver con Navigator.pop()
+```
+
+**Diferencia con ConsumerWidget**: HomeView no observa providers, solo muestra UI estática y maneja navegación.
+
+## Flujo de Navegación
+
+La aplicación utiliza una estructura de navegación basada en Navigator de Flutter:
+
+```
+┌─────────────────────────────────────────┐
+│   main() - ProviderScope                │
+│   ↓                                      │
+│   CounterApp (StatelessWidget)          │
+│   ├─ MaterialApp                        │
+│   └─ home: HomeView                     │
+│      ↓                                  │
+│      ┌──────────────────────────────┐   │
+│      │  HomeView (pantalla inicial) │   │
+│      │  - UI estática con menú      │   │
+│      │  - Botón "¡JUGAR!"           │   │
+│      │  └─ Navigator.push()         │   │
+│      │     ↓                         │   │
+│      │     ┌────────────────────┐   │   │
+│      │     │ JuegoView          │   │   │
+│      │     │ (ConsumerWidget)   │   │   │
+│      │     │ - Observa provider │   │   │
+│      │     │ - Física del juego │   │   │
+│      │     │ └─ Navigator.pop() │   │   │
+│      │     │    ↓ vuelve a Home│   │   │
+│      └──────────────────────────┘   │   │
+│      │                              │   │
+│      └─ (En futuro) ContadorView    │   │
+│                                      │   │
+└─────────────────────────────────────────┘
+```
+
+**Stack de Navegación**:
+1. HomeView (raíz/inicio)
+2. JuegoView (pushed sobre HomeView)
+3. Navigator.pop() vuelve a HomeView
+
+**Código de Navegación**:
+```dart
+// En HomeView: Navegar a JuegoView
+Navigator.of(context).push(
+  MaterialPageRoute(builder: (context) => const JuegoView()),
+);
+
+// En JuegoView: Volver a HomeView
+Navigator.pop(context);
+```
+
 ## Física del Juego
 
 ### Ecuaciones de Movimiento
@@ -228,10 +300,10 @@ void darToque() {
 
 ## Buenas Prácticas
 
-### 1. ConsumerWidget vs ConsumerStatefulWidget
+### 1. ConsumerWidget vs ConsumerStatefulWidget vs StatelessWidget
 
 ```dart
-// ✅ Use ConsumerWidget (sin estado local)
+// ✅ Use ConsumerWidget (sin estado local, observa providers)
 class ContadorView extends ConsumerWidget {
   const ContadorView({super.key});
   
@@ -243,9 +315,25 @@ class ContadorView extends ConsumerWidget {
   }
 }
 
+// ✅ Use StatelessWidget (sin providers, solo presentación)
+class HomeView extends StatelessWidget {
+  const HomeView({super.key});
+  
+  @override
+  Widget build(BuildContext context) {
+    // Solo widgets estáticos, sin observar estado
+    return Text('Bienvenido');
+  }
+}
+
 // ❌ Evite ConsumerStatefulWidget si no es necesario
 // Úselo solo si necesita setState() para estado local
 ```
+
+**Regla Simple**:
+- `StatelessWidget`: Presentación pura, sin lógica de estado
+- `ConsumerWidget`: Observa y consume providers
+- `ConsumerStatefulWidget`: Solo si necesita state local además de providers
 
 ### 2. ref.watch vs ref.read
 

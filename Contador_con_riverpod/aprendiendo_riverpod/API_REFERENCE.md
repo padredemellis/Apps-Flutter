@@ -6,6 +6,8 @@ Documentación de referencia rápida de todas las clases y métodos implementado
 
 - [Contador Feature](#contador-feature)
 - [Juego de Pelota Feature](#juego-de-pelota-feature)
+  - [Modelos](#modelos)
+  - [Vistas](#vistas)
 - [Main](#main)
 
 ---
@@ -383,6 +385,101 @@ MaterialApp(
 | Techo | - | 56.0 |
 | Terreno | - | 400.0 |
 | Suelo (Game Over) | - | 350.0 |
+
+---
+
+### `HomeView` (View)
+**Ubicación**: [lib/features/juego_pelota/view/home_view.dart](lib/features/juego_pelota/view/home_view.dart)
+
+Pantalla de inicio/menú principal de la aplicación.
+
+**Tipo**: `StatelessWidget`
+
+#### Constructor
+```dart
+const HomeView({super.key})
+```
+
+#### Descripción
+
+**Componentes**:
+- **Fondo**: Gradiente lineal (azul claro → verde)
+- **Icono**: Pelota de fútbol de tamaño 100px
+- **Título**: "Dominando el balon" con sombra y estilos prominentes
+- **Subtítulo**: "¿Cuántas dominadas puedes hacer?" en cursiva
+- **Botón**: "¡JUGAR!" con icono de play para iniciar
+
+**Características**:
+- Interfaz atractiva y llamativa
+- Navegación a [JuegoView] usando `Navigator.push()`
+- SafeArea para respetar notches y barras del sistema
+- Diseño responsivo y centrado
+
+#### Estructura de Layout
+```
+┌─────────────────────────────┐
+│   Gradiente (Fondo)         │
+│  ┌─────────────────────────┐│
+│  │   Icono de Pelota (100) ││
+│  │   SizedBox(20)          ││
+│  │   Título "Dominando..." ││
+│  │   SizedBox(10)          ││
+│  │   Subtítulo "¿Cuántas?"││
+│  │   SizedBox(50)          ││
+│  │   Botón "¡JUGAR!"       ││
+│  └─────────────────────────┘│
+└─────────────────────────────┘
+```
+
+#### Métodos
+
+##### `void onPressed()`
+Navega a la pantalla del juego cuando el usuario presiona el botón.
+
+```dart
+onPressed: () {
+  Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => const JuegoView()),
+  );
+}
+```
+
+#### Estilos
+
+| Elemento | Color | Tamaño | Notas |
+|----------|-------|--------|-------|
+| Fondo | Gradiente azul-verde | Full screen | LinearGradient |
+| Icono | Blanco | 100px | Icons.sports_soccer |
+| Título | Blanco | 32px | Bold, shadow |
+| Subtítulo | Blanco 70% | 16px | Cursiva |
+| Botón BG | Blanco | - | ElevatedButton |
+| Botón FG | Verde 800 | - | Contraste |
+
+#### Ejemplo de Uso
+```dart
+void main() {
+  runApp(ProviderScope(child: CounterApp()));
+}
+
+class CounterApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomeView(),  // Pantalla inicial
+    );
+  }
+}
+
+// Navegación desde HomeView a JuegoView
+onPressed: () {
+  Navigator.of(context).push(
+    MaterialPageRoute(builder: (context) => const JuegoView()),
+  );
+}
+
+// Volver desde JuegoView a HomeView
+Navigator.pop(context);
+```
 
 ---
 

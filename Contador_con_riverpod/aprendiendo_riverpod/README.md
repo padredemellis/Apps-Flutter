@@ -4,6 +4,7 @@ Una aplicación Flutter que demuestra el uso de **Riverpod** como gestor de esta
 
 ## 🎯 Características
 
+- **HomeView**: Pantalla de inicio/menú principal con introducción al juego
 - **Contador**: Aplicación que permite incrementar, decrementar y reiniciar un contador de clicks
 - **Juego de Pelota**: Juego interactivo donde el usuario toca la pantalla para impulsar una pelota hacia arriba, implementando física con gravedad y rebotes
 
@@ -29,7 +30,9 @@ lib/
         ├── view_models/
         │   └── juego_notifier.dart    # Lógica del juego con Riverpod
         └── view/
-            └── juego_view.dart        # UI del juego
+            ├── home_view.dart         # UI: Pantalla de inicio
+            ├── juego_view.dart        # UI: Pantalla del juego
+            └── juego_estado.dart      # Modelo de estado
 ```
 
 ### Patrones Utilizados
@@ -140,7 +143,12 @@ class JuegoNotifier extends Notifier<JuegoEstado> {
 - Interacción: detecta toques con `GestureDetector`
 - Usa `Stack` y `Positioned` para la animación
 
-## 🚀 Cómo Ejecutar
+#### [HomeView](lib/features/juego_pelota/view/home_view.dart)
+- Widget: `StatelessWidget`
+- Pantalla de inicio/menú principal
+- Componentes: Icono de pelota, título, descripción y botón para jugar
+- Navegación: Lleva a [JuegoView] usando `Navigator.push()`
+- Diseño: Gradiente de fondo (cielo → terreno)
 
 ```bash
 # Obtener dependencias
