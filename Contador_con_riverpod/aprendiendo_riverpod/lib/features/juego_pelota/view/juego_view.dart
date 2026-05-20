@@ -26,7 +26,7 @@ class JuegoView extends ConsumerWidget {
           child: Stack(
             children: [
               Positioned(
-                top:400.0,
+                top: 400.0,
                 left: 0,
                 right: 0,
                 bottom: 0,
@@ -34,10 +34,7 @@ class JuegoView extends ConsumerWidget {
                   decoration: const BoxDecoration(
                     color: Colors.green,
                     border: Border(
-                      top:BorderSide(
-                        color: Colors.white,
-                        width: 4,
-                      ),
+                      top: BorderSide(color: Colors.white, width: 4),
                     ),
                   ),
                 ),
@@ -51,6 +48,28 @@ class JuegoView extends ConsumerWidget {
                   color: Colors.black87,
                 ),
               ),
+              if (estado.mensaje.isNotEmpty)
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Text(
+                      estado.mensaje,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

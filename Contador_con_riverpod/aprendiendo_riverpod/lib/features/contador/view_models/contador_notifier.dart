@@ -22,6 +22,4 @@ class ContadorNotifier extends Notifier<Contador> {
     state = Contador(0);
   }
 }
-final contadorProvider = NotifierProvider<ContadorNotifier, Contador>(() {
-  return ContadorNotifier();
-});
+final contadorProvider = NotifierProvider<ContadorNotifier, Contador>(() => ContadorNotifier());

@@ -1,4 +1,5 @@
 import 'package:aprendiendo_riverpod/features/contador/view/contador_view.dart';
+import 'package:aprendiendo_riverpod/features/juego_pelota/view/juego_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,6 +14,6 @@ class CounterApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: ContadorView());
+      home: JuegoView());
   }
 }

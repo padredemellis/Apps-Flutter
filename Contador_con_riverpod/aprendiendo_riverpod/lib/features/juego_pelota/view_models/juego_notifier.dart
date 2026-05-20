@@ -7,11 +7,12 @@ class JuegoNotifier extends Notifier<JuegoEstado> {
   @override
   JuegoEstado build() {
     ref.onDispose(() => _reloj?.cancel());
-    return JuegoEstado(posicionY: 100.0, velocidadBalon: 0.0, toques: 0);
+    return JuegoEstado(posicionY: 350.0, velocidadBalon: 0.0, toques: 0);
   }
 
   void iniciarJuego() {
     _reloj?.cancel();
+    state = state.copyWith(mensaje: '');
     _reloj = Timer.periodic(const Duration(milliseconds: 16), (timer) {
       _actualizarFisica();
     });
@@ -19,16 +20,29 @@ class JuegoNotifier extends Notifier<JuegoEstado> {
 
   void _actualizarFisica() {
     final nuevaVelocidad = state.velocidadBalon + 0.4;
-    final nuevaPosicion = state.posicionY + nuevaVelocidad;
-    if (nuevaPosicion >= 400.0) {
+    var nuevaPosicion = state.posicionY + nuevaVelocidad;
+
+    if (nuevaPosicion >= 350.0) {
       _reloj?.cancel();
-      state = JuegoEstado(posicionY: 100.0, velocidadBalon: 0.0, toques: 0);
-    } else {
+      state = JuegoEstado(posicionY: 350.0, velocidadBalon: 0.0, toques: 0, mensaje: '¡Game Over! \nToca para reiniciar');
+      return;
+    }
+
+    if (nuevaPosicion <= 56.0) {
+      nuevaPosicion = 56.0;
+
+      final velocidadRebote = nuevaVelocidad * -0.7;
+
       state = state.copyWith(
-        velocidadBalon: nuevaVelocidad,
+        velocidadBalon: velocidadRebote,
         posicionY: nuevaPosicion,
       );
+      return;
     }
+    state = state.copyWith(
+      velocidadBalon: nuevaVelocidad,
+      posicionY: nuevaPosicion,
+    );
   }
 
   void darToque() {
