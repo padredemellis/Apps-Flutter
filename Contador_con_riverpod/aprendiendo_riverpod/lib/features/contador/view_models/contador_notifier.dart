@@ -1,6 +1,7 @@
-import 'package:aprendiendo_riverpod/features/model/contador.dart';
+import 'package:aprendiendo_riverpod/features/contador/model/contador.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+///ContadorNotifier hereda de Notifier<Contador> para poder emitir 
+///en pantalla la logicas de contador
 class ContadorNotifier extends Notifier<Contador> {
   @override
   Contador build() {
@@ -12,7 +13,9 @@ class ContadorNotifier extends Notifier<Contador> {
   }
 
   void restar() {
-    state = Contador(state.contadorClicks - 1);
+    if (state.contadorClicks > 0){
+      state = Contador(state.contadorClicks - 1);
+    }
   }
 
   void refescar() {

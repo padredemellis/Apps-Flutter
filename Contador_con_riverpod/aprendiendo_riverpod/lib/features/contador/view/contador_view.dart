@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:aprendiendo_riverpod/features/view_models/contador_notifier.dart';
+import 'package:aprendiendo_riverpod/features/contador/view_models/contador_notifier.dart';
 
 class ContadorView extends ConsumerWidget {
   const ContadorView({super.key});
