@@ -11,7 +11,7 @@ class FlappyNotifier extends Notifier<FlappyEstado> {
     ref.onDispose(() => _reloj?.cancel());
     return FlappyEstado(
       posicionY: 100.0,
-      aceleracionBalonY: 0.0,
+      velocidadBalonY: 0.0,
       alturaObstaculoY: 0.0,
       movimientoObstaculoX: 450.0,
       stateGame: StateGame.menu,
@@ -28,7 +28,7 @@ class FlappyNotifier extends Notifier<FlappyEstado> {
   }
 
   void _actualizarFisica() {
-    final nuevaVelocidadBalon = state.aceleracionBalonY + 0.4;
+    final nuevaVelocidadBalon = state.velocidadBalonY + 0.4;
     final nuevaPosicionY = state.posicionY + nuevaVelocidadBalon;
     var nuevaPosicionObstaculo = state.movimientoObstaculoX - 1;
     var nuevoMarcador = state.marcador;
@@ -46,14 +46,14 @@ class FlappyNotifier extends Notifier<FlappyEstado> {
     }
     state = state.copyWith(
       posicionY: nuevaPosicionY,
-      aceleracionBalonY: nuevaVelocidadBalon,
+      velocidadBalonY: nuevaVelocidadBalon,
       movimientoObstaculoX: nuevaPosicionObstaculo,
       marcador: nuevoMarcador,
     );
   }
 
   void saltar() {
-    state = state.copyWith(aceleracionBalonY: -10.0);
+    state = state.copyWith(velocidadBalonY: -10.0);
   }
 
   void gameOver() {
