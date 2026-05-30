@@ -9,113 +9,215 @@ class FlappyView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final juegoEstado = ref.watch(juegoProvider);
+    final bool enMenu = juegoEstado.stateGame == StateGame.menu;
 
     return Scaffold(
-      backgroundColor: Colors.black, 
+      backgroundColor: const Color(0xFF0C0C0E),
       body: Center(
         child: GestureDetector(
           onTap: () {
-            // Controlamos qué hace el toque según el momento del juego
-            if (juegoEstado.stateGame == StateGame.menu) {
+            if (enMenu) {
               ref.read(juegoProvider.notifier).iniciarJuego();
             } else if (juegoEstado.stateGame == StateGame.jugando) {
               ref.read(juegoProvider.notifier).saltar();
             } else if (juegoEstado.stateGame == StateGame.gameOver) {
-              // Si perdió, llamamos al nuevo método de reinicio
               ref.read(juegoProvider.notifier).reiniciarJuego();
             }
           },
           child: Container(
             width: double.infinity,
             height: 600,
-            color: Colors.green,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.white,
+                width: 4,
+              ), 
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Colors.green[400]!,
+                  Colors.green[800]!,
+                ],
+              ),
+            ),
             child: Stack(
               children: [
-                
-                //1. PANTALLA DE MENÚ
-                if (juegoEstado.stateGame == StateGame.menu)
-                  const Center(
-                    child: Text(
-                      "Patea la pantalla para empezar",
-                      style: TextStyle(
-                        color: Colors.white, 
-                        fontSize: 22, 
-                        fontWeight: FontWeight.bold,
+                if (enMenu)
+                  Positioned(
+                    top: 150,
+                    left: 20,
+                    right: 20,
+                    child: Center(
+                      child: Stack(
+                        children: [
+                          Text(
+                            "🔥 PATEA PARA EMPEZAR 🔥",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 3,
+                              foreground: Paint()
+                                ..style = PaintingStyle.stroke
+                                ..strokeWidth = 6
+                                ..color = Colors.black,
+                            ),
+                          ),
+                          const Text(
+                            "🔥 PATEA PARA EMPEZAR 🔥",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 3,
+                              color: Colors.yellow, 
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
 
-                //2. PANTALLA DE GAME OVER
                 if (juegoEstado.stateGame == StateGame.gameOver)
-                  const Center(
-                    child: Text(
-                      "Game Over\nToca para reiniciar el partido",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white, 
-                        fontSize: 22, 
-                        fontWeight: FontWeight.bold,
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      margin: const EdgeInsets.symmetric(horizontal: 30),
+                      decoration: BoxDecoration(
+                        // ignore: deprecated_member_use
+                        color: Colors.black.withOpacity(0.85),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: Colors.redAccent, width: 4),
+                      ),
+                      child: const Text(
+                        "💥 FIN DEL PARTIDO 💥\nToca para la revancha",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                          height: 1.5,
+                        ),
                       ),
                     ),
                   ),
 
-                // PANTALLA DE VICTORIA
                 if (juegoEstado.stateGame == StateGame.victoria)
-                  const Center(
-                    child: Text(
-                      "¡GOOOL! \n¡Ganaste!",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.yellow, 
-                        fontSize: 26, 
-                        fontWeight: FontWeight.bold,
+                  Center(
+                    child: Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        // ignore: deprecated_member_use
+                        color: Colors.black.withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.amber, width: 5),
+                      ),
+                      child: const Text(
+                        "⚡ ¡GOOOOOOL! ⚡\n🏆 ¡CAMPEÓN DEL MUNDO! 🏆",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.amber,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w900,
+                          height: 1.4,
+                        ),
                       ),
                     ),
                   ),
 
-                // PANTALLA DE JUEGO ACTIVO (Elementos físicos)
                 if (juegoEstado.stateGame == StateGame.jugando) ...[
-                  
-                  // Posición de la pelota
+                  if (juegoEstado.marcador < 4) ...[
+                    Positioned(
+                      left: juegoEstado.movimientoObstaculoX,
+                      top: 0,
+                      child: Container(
+                        width: 40,
+                        height: 200,
+                        color: Colors.transparent, // Contenedor estructural
+                        child: Image.asset(
+                          'assets/images/enemigo.png',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      left: juegoEstado.movimientoObstaculoX,
+                      top: 300,
+                      child: Container(
+                        width: 40,
+                        height: 300,
+                        color: Colors.transparent,
+                        child: Image.asset(
+                          'assets/images/enemigo.png',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                  ],
+
+                  if (juegoEstado.marcador >= 4)
+                    Positioned(
+                      left: juegoEstado.movimientoObstaculoX,
+                      top: 0,
+                      child: Container(
+                        width: 80,
+                        height: 600,
+                        color: Colors.transparent,
+                        child: Image.asset(
+                          'assets/images/arco.png',
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                    ),
+                ],
+
+                AnimatedPositioned(
+                  duration: const Duration(milliseconds: 150),
+                  curve: Curves.easeOutBack,
+                  left: enMenu ? 20 : 120,
+                  top: enMenu ? 260 : 250,
+                  child: AnimatedOpacity(
+                    duration: const Duration(milliseconds: 200),
+                    opacity: enMenu ? 1.0 : 0.0,
+                    child: SizedBox(
+                      width: 75,
+                      height: 75,
+                      child: Image.asset(
+                        'assets/images/pie.png',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                  ),
+                ),
+
+                if (juegoEstado.stateGame == StateGame.menu ||
+                    juegoEstado.stateGame == StateGame.jugando)
                   Positioned(
                     left: 100,
-                    top: juegoEstado.posicionY,
-                    child: Container(
-                      width: 30, 
-                      height: 30, 
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
+                    top: enMenu ? 250 : juegoEstado.posicionY,
+                    child: Transform.rotate(
+                      angle: juegoEstado.rotacionBalon,
+                      child: Container(
+                        width: 40,
+                        height: 40,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black38,
+                              blurRadius: 4,
+                              offset: Offset(2, 4),
+                            ),
+                          ],
+                        ),
+                        child: Image.asset(
+                          'assets/images/balon.png',
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                   ),
-
-                  // Posición de los obstáculos arriba
-                  Positioned(
-                    left: juegoEstado.movimientoObstaculoX,
-                    top: 0,
-                    child: Container(
-                      width: 40,
-                      height: 200,
-                      decoration: const BoxDecoration(
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                  ),
-
-                  // Posición de los obstáculos de abajo (Ajustado a 300)
-                  Positioned(
-                    left: juegoEstado.movimientoObstaculoX,
-                    top: 300,
-                    child: Container(
-                      width: 40,
-                      height: 300,
-                      decoration: const BoxDecoration(
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                  ),
-                ],
               ],
             ),
           ),

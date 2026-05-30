@@ -7,7 +7,7 @@ class FlappyEstado {
   final double posicionY;
 
   /// Velocidad actual de la pelota en el eje Y (afectada por la gravedad).
-  final double aceleracionBalonY;
+  final double velocidadBalonY;
 
   /// La altura central o el límite del hueco del obstáculo en el eje Y.
   final double alturaObstaculoY;
@@ -21,30 +21,37 @@ class FlappyEstado {
   /// La cantidad de obstáculos que el jugador ha esquivado con éxito.
   final int marcador;
 
+  ///El giro animado del balón
+  final double rotacionBalon;
+
   FlappyEstado({
     this.posicionY = 100.0,
-    this.aceleracionBalonY = 0.0,
+    this.velocidadBalonY = 0.0,
     this.alturaObstaculoY = 0.0,
     this.movimientoObstaculoX = 0.0,
     this.stateGame = StateGame.menu,
     this.marcador = 0,
+    this.rotacionBalon = 0.0
   });
+
   /// Crea una copia de un estado con los valores actualizados
   FlappyEstado copyWith({
     double? posicionY,
-    double? aceleracionBalonY,
+    double? velocidadBalonY,
     double? alturaObstaculoY,
     double? movimientoObstaculoX,
     StateGame? stateGame,
     int? marcador,
+    double? rotacionBalon
   }) {
     return FlappyEstado(
       posicionY: posicionY ?? this.posicionY,
-      aceleracionBalonY: aceleracionBalonY ?? this.aceleracionBalonY,
+      velocidadBalonY: velocidadBalonY ?? this.velocidadBalonY,
       alturaObstaculoY: alturaObstaculoY ?? this.alturaObstaculoY,
       movimientoObstaculoX: movimientoObstaculoX ?? this.movimientoObstaculoX,
       stateGame: stateGame ?? this.stateGame,
       marcador: marcador ?? this.marcador,
+      rotacionBalon: rotacionBalon ?? this.rotacionBalon
     );
   }
 }
