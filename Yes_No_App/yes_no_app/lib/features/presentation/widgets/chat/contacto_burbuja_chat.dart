@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yes_no_app/features/presentation/widgets/imagen_burbuja.dart';
+import 'package:yes_no_app/features/presentation/widgets/chat/imagen_burbuja.dart';
 
 class ContactoBurbujaChat extends StatelessWidget {
   const ContactoBurbujaChat({super.key});
